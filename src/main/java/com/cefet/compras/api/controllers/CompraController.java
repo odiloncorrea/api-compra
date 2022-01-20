@@ -30,7 +30,7 @@ import com.cefet.compras.api.services.CompraService;
 
 @RestController
 @RequestMapping("/api/compra")
-@Api(value = "compra", tags = "Aplicativo 07 - Compras")
+@Api(value = "compra", tags = "Aplicativo 06 - Compras")
 @CrossOrigin(origins = "*")
 public class CompraController {
 
@@ -122,5 +122,22 @@ public class CompraController {
         log.info("REST request to delete compra : {}", id);
         compraService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    /**
+     * {@code GET  /compra/:descricao/exists} : get the "compra" item.
+     *
+     * @param descricao da compra que será buscado.
+     * @return o {@link ResponseEntity} com status {@code 200 (OK)}, ou com status {@code 204 (Not Found)}.
+     */
+    @GetMapping("/{descricao}/exists")
+    public ResponseEntity<Boolean> isExisting(@PathVariable String descricao){
+        log.info("REST request to get Compra By Descrição : {}", descricao);
+
+        if(compraService.findByDescricao(descricao).isPresent()) {
+            return ResponseEntity.ok().body(Boolean.TRUE);
+        }else{
+        	return ResponseEntity.ok().body(Boolean.FALSE);
+        }
     }
 }

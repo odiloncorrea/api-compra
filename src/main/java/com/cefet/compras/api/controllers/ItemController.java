@@ -30,7 +30,7 @@ import com.cefet.compras.api.services.ItemService;
 
 @RestController
 @RequestMapping("/api/item")
-@Api(value = "item", tags = "Aplicativo 07 - Compras")
+@Api(value = "item", tags = "Aplicativo 06 - Compras")
 @CrossOrigin(origins = "*")
 public class ItemController {
 
@@ -61,7 +61,7 @@ public class ItemController {
     }
     
     /**
-     * {@code PUT  /itens} : Atualiza um item existente Update.
+     * {@code PUT  /item} : Atualiza um item existente Update.
      *
      * @param item o item a ser atualizado.
      * @return o {@link ResponseEntity} com status {@code 200 (OK)} e no corpo o item atualizado,
@@ -83,14 +83,14 @@ public class ItemController {
     
 	
     /**
-     * {@code GET  /itens/:id} : get the "id" item.
+     * {@code GET  /item/:id} : get the "id" item.
      *
      * @param id o id do item que será buscado.
      * @return o {@link ResponseEntity} com status {@code 200 (OK)} e no body o item, ou com status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItem(@PathVariable Long id) {
-        log.info("REST request to get Contato : {}", id);
+        log.info("REST request to get Item : {}", id);
         Optional<Item> item = itemService.findOne(id);
         if(item.isPresent()) {
             return ResponseEntity.ok().body(item.get());
@@ -111,9 +111,9 @@ public class ItemController {
     
 	
     /**
-     * {@code DELETE  /itens/:id} : delete pelo "id" item.
+     * {@code DELETE  /item/:id} : delete pelo "id" item.
      *
-     * @param id o id do itens que será delete.
+     * @param id o id do item que será delete.
      * @return o {@link ResponseEntity} com status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
@@ -121,6 +121,23 @@ public class ItemController {
         log.info("REST request to delete item : {}", id);
         itemService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    /**
+     * {@code GET  /item/:descricao/exists} : get the "descricao" item.
+     *
+     * @param descricao do item que será buscado.
+     * @return o {@link ResponseEntity} com status {@code 200 (OK)}, ou com status {@code 204 (Not Found)}.
+     */
+    @GetMapping("/{descricao}/exists")
+    public ResponseEntity<Boolean> isExisting(@PathVariable String descricao){
+        log.info("REST request to get Item By Descrição : {}", descricao);
+
+        if(itemService.findByDescricao(descricao).isPresent()) {
+            return ResponseEntity.ok().body(Boolean.TRUE);
+        }else{
+        	return ResponseEntity.ok().body(Boolean.FALSE);
+        }
     }
 
 }

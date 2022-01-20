@@ -19,7 +19,7 @@ import java.time.Instant;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "Compra")
+@Table(name = "compra")
 public class Compra implements Serializable{
 
 	private static final long serialVersionUID = -4347892548614073481L;

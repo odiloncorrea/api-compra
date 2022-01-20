@@ -39,4 +39,9 @@ public class CompraService {
 		compraRepository.deleteById(id);
 	}	
 	
+	public Optional<Compra> findByDescricao(String descricao) {
+		log.info("Buscando um Compra para a descrição {}", descricao);
+		return compraRepository.findByDescricao(descricao);
+	}
+	
 }

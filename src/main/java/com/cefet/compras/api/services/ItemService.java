@@ -38,5 +38,10 @@ public class ItemService {
 		log.info("Excluindo item: {}", id);
 		itemRepository.deleteById(id);
 	}
+	
+	public Optional<Item> findByDescricao(String descricao) {
+		log.info("Buscando um Item para a descrição {}", descricao);
+		return itemRepository.findByDescricao(descricao);
+	}
 
 }

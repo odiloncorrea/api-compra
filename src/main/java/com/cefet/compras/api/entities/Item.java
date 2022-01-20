@@ -32,7 +32,7 @@ public class Item implements Serializable{
 	@Column(name = "observacao", nullable = true)
 	private String observacao;
 	
-	@NotEmpty(message = "Categoria não pode ser vazia.")
+	//@NotEmpty(message = "Categoria não pode ser vazia.")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Categoria categoria;
 

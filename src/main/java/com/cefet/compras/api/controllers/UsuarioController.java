@@ -30,7 +30,7 @@ import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/api/usuario")
-@Api(value = "usuario", tags = "Aplicativo 07 - Compras")
+@Api(value = "usuario", tags = "Aplicativo 06 - Compras")
 @CrossOrigin(origins = "*")
 public class UsuarioController {
 	
@@ -90,7 +90,7 @@ public class UsuarioController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuario(@PathVariable Long id) {
-        log.info("REST request to get Contato : {}", id);
+        log.info("REST request to get usuario : {}", id);
         Optional<Usuario> usuario = usuarioService.findOne(id);
         if(usuario.isPresent()) {
             return ResponseEntity.ok().body(usuario.get());
@@ -123,4 +123,33 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * {@code GET  /usuario/:email/exists} : get the "usuário" item.
+     *
+     * @param email do usuario que será buscado.
+     * @return o {@link ResponseEntity} com status {@code 200 (OK)}, ou com status {@code 204 (Not Found)}.
+     */
+    @GetMapping("/{email}/exists")
+    public ResponseEntity<Boolean> isExisting(@PathVariable String email){
+        log.info("REST request to get Compra By Descrição : {}", email);
+        if(usuarioService.findByEmail(email).isPresent()) {
+            return ResponseEntity.ok().body(Boolean.TRUE);
+        }else{
+        	return ResponseEntity.ok().body(Boolean.FALSE);
+        }
+    }
+    
+    @GetMapping("/{email}/{senha}/authenticate")
+    public ResponseEntity<Usuario> authenticateUsuario(@PathVariable  String email, @PathVariable String senha){
+        log.debug("REST request to registrar usuario Usuario : {}", email, senha);
+        Optional<Usuario> usuario = usuarioService.findUsuarioByEmailAndSenha(email, senha);
+
+        if(usuario.isPresent()) {
+            return ResponseEntity.ok().body(usuario.get());
+        }else{
+        	return ResponseEntity.ok().body(new Usuario());
+        }
+
+    }
+    
 }

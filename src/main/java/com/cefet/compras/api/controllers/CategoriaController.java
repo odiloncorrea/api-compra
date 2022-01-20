@@ -29,7 +29,7 @@ import com.cefet.compras.api.services.CategoriaService;
 
 @RestController
 @RequestMapping("/api/categoria")
-@Api(value = "categoria", tags = "Aplicativo 07 - Compras")
+@Api(value = "categoria", tags = "Aplicativo 06 - Compras")
 @CrossOrigin(origins = "*")
 public class CategoriaController {
 	
@@ -62,7 +62,7 @@ public class CategoriaController {
     }
     
     /**
-     * {@code PUT  /categorias} : Atualiza uma categoria existente Update.
+     * {@code PUT  /categoria} : Atualiza uma categoria existente Update.
      *
      * @param categoria o categoria a ser atulizado.
      * @return o {@link ResponseEntity} com status {@code 200 (OK)} e no corpo o categoria atualizado,
@@ -84,14 +84,14 @@ public class CategoriaController {
     
 	
     /**
-     * {@code GET  /categorias/:id} : get the "id" categoria.
+     * {@code GET  /categoria/:id} : get the "id" categoria.
      *
      * @param id o id da categoria que será buscado.
      * @return o {@link ResponseEntity} com status {@code 200 (OK)} e no body o categoria, ou com status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getCategoria(@PathVariable Long id) {
-        log.info("REST request to get Contato : {}", id);
+        log.info("REST request to get Categoria : {}", id);
         Optional<Categoria> categoria = categoriaService.findOne(id);
         if(categoria.isPresent()) {
             return ResponseEntity.ok().body(categoria.get());
@@ -112,7 +112,7 @@ public class CategoriaController {
     
 	
     /**
-     * {@code DELETE  /categorias/:id} : delete pelo "id" categoria.
+     * {@code DELETE  /categoria/:id} : delete pelo "id" categoria.
      *
      * @param id o id do categoria que será delete.
      * @return o {@link ResponseEntity} com status {@code 204 (NO_CONTENT)}.
@@ -124,5 +124,21 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
     
+    /**
+     * {@code GET  /categoria/:descricao/exists} : get the "descricao" categoria.
+     *
+     * @param descricao da categoria que será buscado.
+     * @return o {@link ResponseEntity} com status {@code 200 (OK)}, ou com status {@code 204 (Not Found)}.
+     */
+    @GetMapping("/{descricao}/exists")
+    public ResponseEntity<Boolean> isExisting(@PathVariable String descricao){
+        log.info("REST request to get Categoria By Descrição : {}", descricao);
+
+        if(categoriaService.findByDescricao(descricao).isPresent()) {
+            return ResponseEntity.ok().body(Boolean.TRUE);
+        }else{
+        	return ResponseEntity.ok().body(Boolean.FALSE);
+        }
+    }
   
 }

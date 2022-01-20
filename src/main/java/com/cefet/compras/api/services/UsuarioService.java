@@ -38,4 +38,15 @@ public class UsuarioService {
 		log.info("Excluindo usuario: {}", id);
 		usuarioRepository.deleteById(id);
 	}	
+	
+	public Optional<Usuario> findByEmail(String email) {
+		log.info("Buscando um Usuário para o email {}", email);
+		return usuarioRepository.findByEmail(email);
+	}
+	
+    public Optional<Usuario> findUsuarioByEmailAndSenha(String email, String senha) {
+        log.debug("Buscando um usuário por Email and Senha : {}", email, senha);
+        return usuarioRepository.findUsuarioByEmailAndSenha(email, senha);
+    }
+    
 }

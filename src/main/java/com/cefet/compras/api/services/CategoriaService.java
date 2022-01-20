@@ -37,4 +37,9 @@ public class CategoriaService {
 		log.info("Excluindo categoria: {}", id);
 		categoriaRepository.deleteById(id);
 	}
+	
+	public Optional<Categoria> findByDescricao(String descricao) {
+		log.info("Buscando uma categoria para a descrição {}", descricao);
+		return categoriaRepository.findByDescricao(descricao);
+	}
 }
