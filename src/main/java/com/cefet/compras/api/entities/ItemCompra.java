@@ -23,14 +23,11 @@ public class ItemCompra implements Serializable{
 	private Long id;
 	
 	@Column(name = "situacao", nullable = false)
-	@NotEmpty(message = "situacao não pode ser vazia.")
 	private boolean situacao;
 	
 	@Column(name = "quantiadde", nullable = false)
-	@NotEmpty(message = "Quantidade não pode ser vazia.")
 	private int quantidade;
 	
-	@NotEmpty(message = "Item não pode ser vazio.")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Item item;
 
