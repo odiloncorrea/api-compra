@@ -103,11 +103,15 @@ public class CompraController {
     @GetMapping("/")
     public ResponseEntity<List<Compra>> getCompra(){
        List<Compra> lista = compraService.findAllList();
+       
+       return ResponseEntity.ok().body(lista);
+       /*
        if(lista.size() > 0) {
            return ResponseEntity.ok().body(lista);
        }else{
            return ResponseEntity.notFound().build();
        }
+       */
     }
     
 	

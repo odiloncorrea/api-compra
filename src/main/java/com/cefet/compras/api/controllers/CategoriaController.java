@@ -103,11 +103,14 @@ public class CategoriaController {
     @GetMapping("/")
     public ResponseEntity<List<Categoria>> getCategoria(){
        List<Categoria> lista = categoriaService.findAllList();
+       return ResponseEntity.ok().body(lista);
+       /*
        if(lista.size() > 0) {
            return ResponseEntity.ok().body(lista);
        }else{
            return ResponseEntity.notFound().build();
        }
+       */
     }
     
 	
