@@ -24,11 +24,6 @@ public class UsuarioService {
 		return usuarioRepository.save(usuario);
 	}
 	
-	public Usuario saveAndUpdatePassword(Usuario usuario) {
-		log.info("Persistindo usuario e alterando senha: {}", usuario);
-		return usuarioRepository.save(usuario);
-	}
-	
 	public Optional<Usuario> findOne(Long id) {
 		log.info("Buscando usuario por id: {}", id);
 		return usuarioRepository.findById(id);

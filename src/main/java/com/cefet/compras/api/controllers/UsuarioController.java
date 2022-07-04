@@ -28,9 +28,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.annotations.Api;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 @RestController
 @RequestMapping("/api/usuario")
 @Api(value = "usuario", tags = "Aplicativo 06 - Compras")
@@ -41,8 +38,6 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	@Autowired
-	private PasswordEncoder encoder;
 	
 	public UsuarioController() {}
 	
@@ -55,13 +50,11 @@ public class UsuarioController {
      */
     @PostMapping("/")
     public ResponseEntity<Usuario> createUsuario(@Valid @RequestBody Usuario usuario) throws URISyntaxException {
-        log.debug("REST request to save Usuario : {}", usuario);
+        log.debug("REST request to save Pessoa : {}", usuario);
         if (usuario.getId() != null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Um novo usuario não pode ter um ID");
         }
-        /*implementação do spring security */
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
         Usuario result = usuarioService.save(usuario);
         return ResponseEntity.created(new URI("/api/usuario/" + result.getId()))
                 .body(result);
@@ -83,31 +76,6 @@ public class UsuarioController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid usuario id null");
         }
-        /*implementação do spring security */
-        //usuario.setSenha(encoder.encode(usuario.getSenha()));        
-        Usuario result = usuarioService.save(usuario);
-        return ResponseEntity.ok()
-                .body(result);
-    }
-    
-    /**
-     * {@code PUT  /usuario} : Atualiza um usuario existente Update.
-     *
-     * @param contato o usuario a ser atulizado.
-     * @return o {@link ResponseEntity} com status {@code 200 (OK)} e no corpo o usuario atualizado,
-     * ou com status {@code 400 (Bad Request)} se o usuario não é válido,
-     * ou com status {@code 500 (Internal Server Error)} se o usuario não pode ser atualizado.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PutMapping("/updatePassword")
-    public ResponseEntity<Usuario> saveAndUpdatePassword(@Valid @RequestBody Usuario usuario) throws URISyntaxException {
-        log.debug("REST request to update password : {}", usuario);
-        if (usuario.getId() == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Invalid usuario id null");
-        }
-        /*implementação do spring security */
-        usuario.setSenha(encoder.encode(usuario.getSenha()));        
         Usuario result = usuarioService.save(usuario);
         return ResponseEntity.ok()
                 .body(result);
@@ -166,7 +134,7 @@ public class UsuarioController {
      */
     @GetMapping("/{email}/exists")
     public ResponseEntity<Boolean> isExisting(@PathVariable String email){
-        log.info("REST request to get usuario By email : {}", email);
+        log.info("REST request to get Compra By Descrição : {}", email);
         if(usuarioService.findByEmail(email).isPresent()) {
             return ResponseEntity.ok().body(Boolean.TRUE);
         }else{
@@ -177,8 +145,7 @@ public class UsuarioController {
     @GetMapping("/{email}/{senha}/authenticate")
     public ResponseEntity<Usuario> authenticateUsuario(@PathVariable  String email, @PathVariable String senha){
         log.debug("REST request to registrar usuario Usuario : {}", email, senha);
-        /*implementação do spring security */
-        Optional<Usuario> usuario = usuarioService.findUsuarioByEmailAndSenha(email, encoder.encode(senha));
+        Optional<Usuario> usuario = usuarioService.findUsuarioByEmailAndSenha(email, senha);
 
         if(usuario.isPresent()) {
             return ResponseEntity.ok().body(usuario.get());
@@ -186,22 +153,6 @@ public class UsuarioController {
         	return ResponseEntity.ok().body(new Usuario());
         }
 
-    }
-    
-    @GetMapping("/emailAuthenticate")
-    public String usuarioAuthenticate(Authentication authentication){
-        return authentication.getName();
-    }
-    
-    @GetMapping("/{email}/authenticate")
-    public ResponseEntity<Usuario> getUsuario(@PathVariable String email) {
-        log.info("REST request to get usuario by email : {}", email);
-        Optional<Usuario> usuario = usuarioService.findByEmail(email);
-        if(usuario.isPresent()) {
-            return ResponseEntity.ok().body(usuario.get());
-        }else{
-            return ResponseEntity.notFound().build();
-        }
     }
     
 }

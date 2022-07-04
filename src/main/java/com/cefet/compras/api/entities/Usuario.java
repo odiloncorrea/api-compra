@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -36,8 +35,6 @@ public class Usuario implements Serializable{
 	@Column(name = "senha", nullable = false)
 	@NotEmpty(message = "Senha não pode ser vazia.")
 	@Length(min = 3, max = 200, message = "Senha deve conter entre 3 e 200 caracteres.")
-	/*implementação do spring security */
-	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String senha;
 
 	public Long getId() {
